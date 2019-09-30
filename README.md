@@ -22,10 +22,26 @@ Wrist circumference (cm)
 ## Code folder
 The R code files are in the code folder.   
 In R code:  
-Data cleaning:using the linear relationship between density and bodyfat, cook's distance to find out outliers. Then delete the possible outliers. Scale the variables.  
+### Data cleaning:  
+Using the linear relationship between density and bodyfat, cook's distance to find out outliers. Then delete the possible outliers. Scale the variables.  
+Here are the outliers we dropped：
+39 has too large weight  
+42 is way too short  
+48,76,96 does not match the relationship between bodyfat and density  
+182 has bodyfat 0, it is a mistake.  
 
-Model building:  
-Do variable selection using the stepwise selection(AIC,BIC), Mallow's cp, and lasso.
+### Model building:   
+Do variable selection using the stepwise selection(AIC,BIC), Mallow's cp, and lasso.   
+AIC backward: BODYFAT ~ AGE + ADIPOSITY + NECK + CHEST + ABDOMEN + HIP + BICEPS + 
+    WRIST  
+AIC forward/both sides: BODYFAT ~ ABDOMEN + WEIGHT + WRIST + BICEPS  
+BIC backwards: BODYFAT ~ ABDOMEN + WEIGHT + WRIST  
+BIC forward: BODYFAT ~ AGE + ABDOMEN + WRIST  
+BIC both sides: BODYFAT ~ ABDOMEN + WRIST + HEIGHT  
+Mallow's cp: BODYFAT ~ AGE + HEIGHT + CHEST + ABDOMEN + BICEPS + WRIST  
+Lasso: BODYFAT ~ AGE + HEIGHT + ABDOMEN + WRIST   
+
+
 
 NEXT need to be done:drawbacks and advantages of each method.   
 ...........
