@@ -29,7 +29,7 @@ data[c(39, 42, 48, 96, 76, 182),]
 #182 has bodyfat 0, it is a mistake.
 
 data_clean = data_new[c(-39, -42, -48, -96, -76, -182), ]#remove some potential outliers
-# data_clean<-data.frame(scale(data_clean))#scale the data
+data_clean<-data.frame(scale(data_clean))#scale the data
 write.csv(data_clean,"bodyfat_clean.csv",row.names = F)
 #check the cook's distance again
 model = lm(BODYFAT ~ ., data = data_clean)
@@ -146,3 +146,6 @@ summary(lm(BODYFAT ~ ABDOMEN + WEIGHT, data = data_clean))
 summary(lm(BODYFAT ~ ABDOMEN , data = data_clean))
 
 #so our final model should be  BODYFAT ~ ABDOMEN 
+layout(1)
+plot(data_clean$ABDOMEN,data_clean$BODYFAT,xlab="Abdomen",ylab="Bodyfat")
+abline(-38,0.62,col="red")
