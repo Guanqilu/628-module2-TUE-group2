@@ -4,6 +4,7 @@ library(faraway)
 library(glmnet)
 # read in the raw data
 data = read.csv("BodyFat.csv", row.names = 1)
+                
 # data cleaning 
 # detect points which bodyfat does not have a linear relationship of 1 / density
 plot(data$BODYFAT,data$DENSITY)
@@ -12,6 +13,7 @@ plot(B-data$BODYFAT,xlab = 'observations', ylab = 'B-BODYFAT(%)', main = "siri's
 text(1:length(data[,1]), B-data$BODYFAT, 1:length(data[,1]),cex=0.8)
 #we should get rid of the density 
 data_new = data[, -2]
+
 #check the cook's distance one by one
 model1<- lm(BODYFAT ~ AGE + WEIGHT + HEIGHT + ADIPOSITY + NECK + CHEST + ABDOMEN + HIP + THIGH + KNEE + ANKLE + BICEPS + FOREARM + WRIST, data = data)
 plot(model1, which = 4)
@@ -20,8 +22,14 @@ plot(model2, which = 4)
 model3<- lm(BODYFAT ~ AGE + WEIGHT + HEIGHT + ADIPOSITY + NECK + CHEST + ABDOMEN + HIP + THIGH + KNEE + ANKLE + BICEPS + FOREARM + WRIST, data = data[-c(39,42),])
 plot(model3, which = 4)
 #delete the possible outliers
+data[c(39, 42, 48, 96, 76, 182),]
+#39 has too large weight
+#42 is way too short
+#48,76,96 does not match the relationship between bodyfat and density
+#182 has bodyfat 0, it is a mistake.
+
 data_clean = data_new[c(-39, -42, -48, -96, -76, -182), ]#remove some potential outliers
-data_clean<-data.frame(scale(data_clean))#scale the data
+# data_clean<-data.frame(scale(data_clean))#scale the data
 write.csv(data_clean,"bodyfat_clean.csv",row.names = F)
 #check the cook's distance again
 model = lm(BODYFAT ~ ., data = data_clean)
@@ -74,7 +82,7 @@ g = leaps(X, Y, nbest = 1)
 Cpplot(g)
 print(colnames(data_clean)[c(1, 3, 6, 7, 12, 14) + 1])
 cp_model = BODYFAT ~ AGE + HEIGHT + CHEST + ABDOMEN +  BICEPS + WRIST
-cp_lm = lm(cp_model, data_clean)
+cp_lm = lm(cp_model, data=data_clean)
 summary(cp_lm)
 #adjusted R square
 g_ad = leaps(X, Y, nbest = 1,method="adjr2")
@@ -97,7 +105,7 @@ model_l<-lm(BODYFAT ~ AGE + HEIGHT  + ABDOMEN +  WRIST,data=data_clean)
 cor(data_clean$WRIST,data_clean$ABDOMEN)
 cor(data_clean$WEIGHT,data_clean$ABDOMEN)
 cor(data_clean$WRIST,data_clean$WEIGHT)
-
+vif(model_BIC_f)
 
 #SUMMARY
 print(model_AIC_b)
@@ -110,10 +118,26 @@ summary(model_AIC_t)
 print(model_BIC_b)
 summary(model_BIC_b)
 print(model_BIC_f)
-summary(model_AIC_f)
+summary(model_BIC_f)
 print(model_BIC_t)
-summary(model_AIC_t)
+summary(model_BIC_t)
 
 summary(cp_lm)
 
 summary(model_l)
+
+
+#PLOTS
+layout(matrix(1:4, byrow = TRUE, nrow = 2))
+plot(model_AIC_b)
+plot(model_AIC_f)
+plot(model_AIC_t)
+plot(model_BIC_b)
+plot(model_BIC_f)
+plot(model_BIC_t)
+plot(model_l)
+plot(cp_lm)
+
+#anova 
+anova(model_AIC_b,model_AIC_f,model_AIC_t,model_BIC_f,model_BIC_b,model_BIC_t,cp_lm,model_l)
+
