@@ -64,11 +64,7 @@ summary(model_BIC_b)
 # forward
 model_BIC_f = step(base, direction = "forward", trace = 0, scope = list(lower = base, upper = full), k = log(n))
 print(model_BIC_f )
-#check the model results
-summary(model_BIC_f)
-summary(lm(BODYFAT ~ ABDOMEN + WRIST, data = data_clean))
-summary(lm(BODYFAT ~ ABDOMEN + WEIGHT, data = data_clean))
-summary(lm(BODYFAT ~ ABDOMEN , data = data_clean))
+
 #both sides
 model_BIC_t = step(full, direction = "both", trace = 0, k = log(n))
 print(model_BIC_t)
@@ -127,6 +123,7 @@ summary(cp_lm)
 summary(model_l)
 
 
+
 #PLOTS
 layout(matrix(1:4, byrow = TRUE, nrow = 2))
 plot(model_AIC_b)
@@ -137,7 +134,15 @@ plot(model_BIC_f)
 plot(model_BIC_t)
 plot(model_l)
 plot(cp_lm)
-
+plot(model_BIC_f$residuals)
+abline(h=0)
 #anova 
 anova(model_AIC_b,model_AIC_f,model_AIC_t,model_BIC_f,model_BIC_b,model_BIC_t,cp_lm,model_l)
 
+#try to use only two x.
+#check the model results
+summary(lm(BODYFAT ~ ABDOMEN + WRIST, data = data_clean))
+summary(lm(BODYFAT ~ ABDOMEN + WEIGHT, data = data_clean))
+summary(lm(BODYFAT ~ ABDOMEN , data = data_clean))
+
+#so our final model should be  BODYFAT ~ ABDOMEN 
