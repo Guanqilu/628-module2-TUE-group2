@@ -35,7 +35,7 @@ Here are the outliers we dropped：
 42 is way too short  
 48,76,96 does not match the relationship between bodyfat and density  
 182 has bodyfat 0, it is a mistake.  
-
+We choose to just drop these outliers.  
 ### Model building:   
 Do variable selection using the stepwise selection(AIC,BIC), Mallow's cp, and lasso.   
 AIC backward: BODYFAT ~ AGE + ADIPOSITY + NECK + CHEST + ABDOMEN + HIP + BICEPS + 
@@ -47,11 +47,12 @@ BIC both sides: BODYFAT ~ ABDOMEN + WRIST + HEIGHT
 Mallow's cp: BODYFAT ~ AGE + HEIGHT + CHEST + ABDOMEN + BICEPS + WRIST  
 Lasso: BODYFAT ~ AGE + HEIGHT + ABDOMEN + WRIST   
 
+NEED TO DO NEXT----PLOTS  
 
 
-NEXT need to be done:drawbacks and advantages of each method.   
-...........
 ### model BIC_forward  is the best considering the F statistics and adjusted R square. 
+ Then we try to use just 1 independent variables.
+ The final model should be BODYFAT = 0.62*ABDOMEN  - 38
 
 
 
