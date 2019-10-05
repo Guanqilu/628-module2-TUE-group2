@@ -46,8 +46,7 @@ BIC backward: BODYFAT ~ AGE + ABDOMEN + WRIST
 BIC both sides: BODYFAT ~ ABDOMEN + WRIST + HEIGHT  
 Mallow's cp: BODYFAT ~ AGE + HEIGHT + CHEST + ABDOMEN + BICEPS + WRIST  
 Lasso: BODYFAT ~ AGE + HEIGHT + ABDOMEN + WRIST   
-
-NEED TO DO NEXT----PLOTS  
+ 
 
 
 ### model BIC_forward  is the best considering the F statistics and adjusted R square.   
