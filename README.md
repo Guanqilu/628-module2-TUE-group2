@@ -7,7 +7,7 @@ We try to build an easy, robust and accurate model to  predict the bodyfat.
 
 
 ## Raw Data  
-The BodyFat.csv contains 252 observations and 16 variables,we treat the fist column(IDNO) as rownames,because it is the number of observations.   
+The BodyFat.csv contains 252 observations of male and 16 variables,we treat the fist column(IDNO) as rownames,because it is the number of observations.   
 Density
 Age (years)  
 Weight (lbs)  
