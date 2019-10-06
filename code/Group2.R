@@ -4,7 +4,8 @@ library(faraway)
 library(glmnet)
 # read in the raw data
 data = read.csv("BodyFat.csv", row.names = 1)
-boxplot(data,main="boxplot of rawdata",cex.axis=0.4)                
+boxplot(data,main="boxplot of rawdata",cex.axis=0.4)      
+
 # data cleaning 
 # detect points which bodyfat does not have a linear relationship of 1 / density
 plot(data$BODYFAT,data$DENSITY,xlab="bodayfat",ylab="density")
@@ -12,33 +13,31 @@ text(1:length(data[,1]), data$BODYFAT, 1:length(data[,1]),cex=0.5)
 B = 495*(1/data$DENSITY)-450
 plot(B-data$BODYFAT,xlab = 'Observations', ylab = 'B-Bodyfat(%)', main = "siri's equation")
 text(c(48,76,182,216), B[c(48,76,182,216)]-data$BODYFAT[c(48,76,182,216)], c(48,76,182,216),cex=0.8,pos=4)
+BMI=703*(data$WEIGHT/(data$HEIGHT)^2)
+plot(BMI-data$ADIPOSITY)
+text(1:length(data[,1]), BMI-data$ADIPOSITY, 1:length(data[,1]),cex=1)
 #we should get rid of the density 
 data_new = data[, -2]
 
 #check the cook's distance one by one
 model1<- lm(BODYFAT ~ ., data = data_new)
 plot(model1, which = 4)
-model2<- lm(BODYFAT ~ ., data = data_new[-42,])
-plot(model2, which = 4)
-model3<- lm(BODYFAT ~ ., data = data_new[-c(39,42),])
-plot(model3, which = 4)
 #delete the possible outliers
-data[c(39, 42, 48, 96, 76, 182),]
+data[c(39, 42, 48, 96, 76, 163,182,221),]
 #39 has too large weight
 #42 is way too short
 #48,76,96 does not match the relationship between bodyfat and density
 #182 has bodyfat 0, it is a mistake.
-
-data_clean = data_new[c(-39, -42, -48, -96, -76, -182), ]#remove some potential outliers
-data_clean_s<-data.frame(scale(data_clean))#scale the data
+#221,163,42 don't obey the BMI equation
+data_clean = data_new[c(-39, -42, -48, -96, -76, -163,-182,-221), ]#remove some potential outliers
+data_clean<-data.frame(scale(data_clean))#scale the data
 write.csv(data_clean,"bodyfat_clean.csv",row.names = F)
 #check the cook's distance again
 model = lm(BODYFAT ~ ., data = data_clean)
 plot(model, which = 4)
-#let's look at the 221 person
-data_clean[221,]#nothing wierd
-# outlier test
-# outlierTest(model)
+
+#outlier test
+ outlierTest(model)
 
 # methods: Mallow's Cp, Adj-R^2, AIC, and BIC, lasso 
 # AIC&BIC
@@ -143,6 +142,7 @@ abline(h=0)
 anova(model_AIC_b,model_AIC_f,model_AIC_t,model_BIC_f,model_BIC_b,model_BIC_t,cp_lm,model_l,adr_model)
 #try to use only two x.
 #check the model results
+data_clean = data_new[c(-39, -42, -48, -96, -76, -163,-182,-221), ]#?????????scale???
 summary(lm(BODYFAT ~ ABDOMEN + WRIST, data = data_clean))
 summary(lm(BODYFAT ~ ABDOMEN + WEIGHT, data = data_clean))
 summary(lm(BODYFAT ~ ABDOMEN , data = data_clean))
@@ -158,3 +158,4 @@ final_model<-lm(BODYFAT ~ ABDOMEN + WRIST, data = data_clean)
 plot(final_model,which=1)
 plot(final_model,which=2)
 plot(final_model,which=4)
+
