@@ -36,14 +36,15 @@ Here are the outliers we dropped：
 182 has bodyfat 0, it is a mistake.  
 We choose to just drop these outliers.  
 ### Model building:   
-Do variable selection using the stepwise selection(AIC,BIC), Mallow's cp, and lasso.   
+Do variable selection using the stepwise selection(AIC,BIC), Mallow's cp, ajdusted R square and lasso.   
 AIC backward: BODYFAT ~ AGE + ADIPOSITY + NECK + CHEST + ABDOMEN + HIP + BICEPS + 
     WRIST  
 AIC forward/both sides: BODYFAT ~ ABDOMEN + WEIGHT + WRIST + BICEPS  
 BIC forwards: BODYFAT ~ ABDOMEN + WEIGHT + WRIST  
 BIC backward: BODYFAT ~ AGE + ABDOMEN + WRIST  
 BIC both sides: BODYFAT ~ ABDOMEN + WRIST + HEIGHT  
-Mallow's cp: BODYFAT ~ AGE + HEIGHT + CHEST + ABDOMEN + BICEPS + WRIST  
+Mallow's cp: BODYFAT ~ AGE + HEIGHT + CHEST + ABDOMEN + BICEPS + WRIST   
+Adjusted R sq: BODYFAT ~ AGE + ADIPOSITY + NECK + CHEST + ABDOMEN + HIP + BICEPS + FOREARM + WRIST  
 Lasso: BODYFAT ~ AGE + HEIGHT + ABDOMEN + WRIST   
  
 
