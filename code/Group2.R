@@ -4,22 +4,23 @@ library(faraway)
 library(glmnet)
 # read in the raw data
 data = read.csv("BodyFat.csv", row.names = 1)
-                
+boxplot(data,main="boxplot of rawdata",cex.axis=0.4)                
 # data cleaning 
 # detect points which bodyfat does not have a linear relationship of 1 / density
-plot(data$BODYFAT,data$DENSITY)
+plot(data$BODYFAT,data$DENSITY,xlab="bodayfat",ylab="density")
+text(1:length(data[,1]), data$BODYFAT, 1:length(data[,1]),cex=0.5)
 B = 495*(1/data$DENSITY)-450
-plot(B-data$BODYFAT,xlab = 'observations', ylab = 'B-BODYFAT(%)', main = "siri's equation",type="p",cex=0.7)
-text(1:length(data[,1]), B-data$BODYFAT, 1:length(data[,1]),cex=0.8)
+plot(B-data$BODYFAT,xlab = 'Observations', ylab = 'B-Bodyfat(%)', main = "siri's equation")
+text(c(48,76,182,216), B[c(48,76,182,216)]-data$BODYFAT[c(48,76,182,216)], c(48,76,182,216),cex=0.8,pos=4)
 #we should get rid of the density 
 data_new = data[, -2]
 
 #check the cook's distance one by one
-model1<- lm(BODYFAT ~ AGE + WEIGHT + HEIGHT + ADIPOSITY + NECK + CHEST + ABDOMEN + HIP + THIGH + KNEE + ANKLE + BICEPS + FOREARM + WRIST, data = data)
+model1<- lm(BODYFAT ~ ., data = data_new)
 plot(model1, which = 4)
-model2<- lm(BODYFAT ~ AGE + WEIGHT + HEIGHT + ADIPOSITY + NECK + CHEST + ABDOMEN + HIP + THIGH + KNEE + ANKLE + BICEPS + FOREARM + WRIST, data = data[-42,])
+model2<- lm(BODYFAT ~ ., data = data_new[-42,])
 plot(model2, which = 4)
-model3<- lm(BODYFAT ~ AGE + WEIGHT + HEIGHT + ADIPOSITY + NECK + CHEST + ABDOMEN + HIP + THIGH + KNEE + ANKLE + BICEPS + FOREARM + WRIST, data = data[-c(39,42),])
+model3<- lm(BODYFAT ~ ., data = data_new[-c(39,42),])
 plot(model3, which = 4)
 #delete the possible outliers
 data[c(39, 42, 48, 96, 76, 182),]
@@ -29,7 +30,7 @@ data[c(39, 42, 48, 96, 76, 182),]
 #182 has bodyfat 0, it is a mistake.
 
 data_clean = data_new[c(-39, -42, -48, -96, -76, -182), ]#remove some potential outliers
-data_clean<-data.frame(scale(data_clean))#scale the data
+data_clean_s<-data.frame(scale(data_clean))#scale the data
 write.csv(data_clean,"bodyfat_clean.csv",row.names = F)
 #check the cook's distance again
 model = lm(BODYFAT ~ ., data = data_clean)
@@ -84,7 +85,9 @@ summary(cp_lm)
 g_ad = leaps(X, Y, nbest = 1,method="adjr2")
 plot(g_ad$adjr2)
 (g_ad$which)[which(g_ad$adjr2==max(g_ad$adjr2)),]
-
+Ad_r=BODYFAT~AGE+ADIPOSITY+NECK+CHEST+ABDOMEN+HIP+BICEPS+FOREARM+WRIST
+adr_model<-lm(Ad_r,data=data_clean)
+summary(adr_model)
 
 #lasso
 model_l <- glmnet(as.matrix(data_clean[,2:15]), data_clean$BODYFAT, family = "gaussian", nlambda = 50, alpha = 1,standardize = T)
@@ -137,15 +140,21 @@ plot(cp_lm)
 plot(model_BIC_f$residuals)
 abline(h=0)
 #anova 
-anova(model_AIC_b,model_AIC_f,model_AIC_t,model_BIC_f,model_BIC_b,model_BIC_t,cp_lm,model_l)
-
+anova(model_AIC_b,model_AIC_f,model_AIC_t,model_BIC_f,model_BIC_b,model_BIC_t,cp_lm,model_l,adr_model)
 #try to use only two x.
 #check the model results
 summary(lm(BODYFAT ~ ABDOMEN + WRIST, data = data_clean))
 summary(lm(BODYFAT ~ ABDOMEN + WEIGHT, data = data_clean))
 summary(lm(BODYFAT ~ ABDOMEN , data = data_clean))
+vif(lm(BODYFAT ~ ABDOMEN + WEIGHT, data = data_clean))
+vif(lm(BODYFAT ~ ABDOMEN + WRIST, data = data_clean))
+#so our final model should be  BODYFAT ~ ABDOMEN +wrist
 
-#so our final model should be  BODYFAT ~ ABDOMEN 
 layout(1)
-plot(data_clean$ABDOMEN,data_clean$BODYFAT,xlab="Abdomen",ylab="Bodyfat")
-abline(-38,0.62,col="red")
+#plot(data_clean$ABDOMEN,data_clean$BODYFAT,xlab="Abdomen",ylab="Bodyfat",main="final model")
+#abline(-38,0.617,col="red")
+#plot(data_clean$BODYFAT-(0.62*data_clean$ABDOMEN-38))
+final_model<-lm(BODYFAT ~ ABDOMEN + WRIST, data = data_clean)
+plot(final_model,which=1)
+plot(final_model,which=2)
+plot(final_model,which=4)
