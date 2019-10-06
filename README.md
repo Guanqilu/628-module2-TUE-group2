@@ -55,6 +55,8 @@ Lasso: BODYFAT ~ AGE + HEIGHT + ABDOMEN + WRIST
  The final model should be BODYFAT = 0.617*ABDOMEN  - 38  
 
 
+# Shiny App 
+https://manu200921.shinyapps.io/BodyFatCalculator/  
 
 
 
