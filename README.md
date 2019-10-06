@@ -26,8 +26,7 @@ Forearm circumference (cm)
 Wrist circumference (cm)     
 
 ## Code folder
-The R code files are in the code folder.   
-In R code:  
+The R code and jupyter notebook temporary code files are in the code folder.   
 ### Data cleaning:  
 Using the linear relationship between density and bodyfat, cook's distance to find out outliers. Then delete the possible outliers. Scale the variables.  
 Here are the outliers we dropped：
