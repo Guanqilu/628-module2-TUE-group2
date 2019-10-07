@@ -31,21 +31,20 @@ The R code and jupyter notebook temporary code files are in the code folder.
 Using the linear relationship between density and bodyfat, cook's distance to find out outliers. Then delete the possible outliers. Scale the variables.  
 Here are the outliers we dropped：
 39 has too large weight  
-42 is way too short  
-48,76,96 does not match the relationship between bodyfat and density  
+48,76,96 do not match the relationship between bodyfat and density  
+221,163,42 don't match BMI equation.  
 182 has bodyfat 0, it is a mistake.  
 We choose to just drop these outliers.  
 ### Model building:   
-Do variable selection using the stepwise selection(AIC,BIC), Mallow's cp, ajdusted R square and lasso.   
-AIC backward: BODYFAT ~ AGE + WEIGHT + HEIGHT + ADIPOSITY + NECK + 
-    ABDOMEN + HIP + THIGH + FOREARM + WRIST
-AIC forward/both sides:  BODYFAT ~ ABDOMEN + WEIGHT + WRIST + BICEPS
-BIC forwards: BODYFAT ~ ABDOMEN + WEIGHT + WRIST  
-BIC backward: BODYFAT ~ WEIGHT + ABDOMEN + WRIST 
-BIC both sides: BODYFAT ~ ABDOMEN + WRIST + WEIGHT 
-Mallow's cp: BODYFAT ~ AGE +WEIGHT+ HEIGHT +ADIPOSITY+NECK+ ABDOMEN +HIP+ THIGH+FOREARM + WRIST  
-Adjusted R sq:BODYFAT~AGE +WEIGHT+ HEIGHT +ADIPOSITY+NECK+CHEST+ ABDOMEN +HIP+ THIGH+BICEPS+FOREARM + WRIST  
-Lasso:  BODYFAT ~ AGE + HEIGHT + ABDOMEN + WRIST  
+Do variable selection using the stepwise selection(AIC,BIC), Mallow's cp, ajdusted R square and lasso.    
+AIC backward: BODYFAT ~ AGE + WEIGHT + HEIGHT + ADIPOSITY + NECK + ABDOMEN + HIP + THIGH + FOREARM + WRIST  
+AIC forward/both sides:  BODYFAT ~ ABDOMEN + WEIGHT + WRIST + BICEPS  
+BIC forwards: BODYFAT ~ ABDOMEN + WEIGHT + WRIST    
+BIC backward: BODYFAT ~ WEIGHT + ABDOMEN + WRIST   
+BIC both sides: BODYFAT ~ ABDOMEN + WRIST + WEIGHT   
+Mallow's cp: BODYFAT ~ AGE +WEIGHT+ HEIGHT +ADIPOSITY+NECK+ ABDOMEN +HIP+ THIGH+FOREARM + WRIST    
+Adjusted R sq:BODYFAT~AGE +WEIGHT+ HEIGHT +ADIPOSITY+NECK+CHEST+ ABDOMEN +HIP+ THIGH+BICEPS+FOREARM + WRIST    
+Lasso:  BODYFAT ~ AGE + HEIGHT + ABDOMEN + WRIST    
  
 
 
