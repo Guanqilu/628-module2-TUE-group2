@@ -51,8 +51,8 @@ Lasso:  BODYFAT ~ AGE + HEIGHT + ABDOMEN + WRIST
 ### model BIC_forward  is the best considering the F statistics and adjusted R square.   
  If we only use 2 variables:  
  The model is BODYFAT = 0.73*ABDOMEN  -2.03* WRIST - 11.2 
- Then we try to use just 1 independent variables.  
- The final model should be BODYFAT = 0.617*ABDOMEN  - 38  
+ ps.If we try to use just 1 independent variables.  
+ BODYFAT = 0.617*ABDOMEN  - 38  
 
 
 # Shiny App (code in code folder)
