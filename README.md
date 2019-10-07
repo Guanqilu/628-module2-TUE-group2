@@ -60,6 +60,8 @@ Lasso:  BODYFAT ~ AGE + HEIGHT + ABDOMEN + WRIST
 # Shiny App (code in code folder)
 https://manu200921.shinyapps.io/BodyFatCalculator/  
 
+# final code folder 
+This is our final version code.
 
 # Summary folder  
 The final executive summary of .ipynb and .pdf    
