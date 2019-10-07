@@ -8,8 +8,7 @@ server <- function(input, output) {
       need(mode(input$abs) == "numeric" & mode(input$wrist) == "numeric", "Please input a number.")
     )
     
-    #need changed: based on our summary.
-    formula = round(-10.54 + input$abs * 0.73 + input$wrist * (-2.08),1)
+    formula = round(-11.2 + input$abs * 0.73 + input$wrist * (-2.03),1)
     
     #check if the body fat percnetage is under 50%.
     validate(
